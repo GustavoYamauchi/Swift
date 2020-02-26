@@ -50,10 +50,11 @@ class testeViewController : UIViewController //Controller -> Controla a view
 //    static var label : UILabel? = UILabel()
     var btnV : MeuBtn!;
     var btnM : MeuBtn!;
+    var btnInicio : MeuBtn!;
 
     
-    let perguntas = ["1 - Pergunta1", "2 - Pergunta2", "3 - Pergunta3", "4 - Pergunta4", "5 - Pergunta5", "6 - Pergunta6"]
-    let respostasCorretas = [1, 0, 0, 1, 1, 0]
+    let perguntas = ["Comeco", "1 - Pergunta1", "2 - Pergunta2", "3 - Pergunta3", "4 - Pergunta4", "5 - Pergunta5", "6 - Pergunta6", "Fim"]
+    let respostasCorretas = [3, 1, 1, 1, 1, 1, 1, 1]
     
     var perguntaIndex = 0;
     
@@ -70,6 +71,7 @@ class testeViewController : UIViewController //Controller -> Controla a view
         label.text = perguntas[perguntaIndex];     //Set texto
         label.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1);   //Set cor do texto
         label.textAlignment = .center
+//        salabel.isHidden = true
         
         view.addSubview(label);     //Adiciono a label na view
         
@@ -79,6 +81,7 @@ class testeViewController : UIViewController //Controller -> Controla a view
         btnV.setTitleColor(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), for: .normal)
         btnV.tag = 1
         btnV.backgroundColor = #colorLiteral(red: 0.4, green: 0.3607843137, blue: 0.6470588235, alpha: 1);
+        btnV.isHidden = true
         view.addSubview(btnV)
         
         //config botao de Mentira
@@ -87,13 +90,24 @@ class testeViewController : UIViewController //Controller -> Controla a view
         btnM.setTitleColor(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), for: .normal)
         btnM.tag = 0
         btnM.backgroundColor = #colorLiteral(red: 0.4, green: 0.3607843137, blue: 0.6470588235, alpha: 1);
+        btnM.isHidden = true
         view.addSubview(btnM)
-        
-        
+
+        //config botao de Inicio
+        btnInicio = MeuBtn()
+        btnInicio.setTitle("Inicio", for: .normal);
+        btnInicio.setTitleColor(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), for: .normal)
+        btnInicio.tag = 3
+        btnInicio.backgroundColor = #colorLiteral(red: 0.4, green: 0.3607843137, blue: 0.6470588235, alpha: 1);
+        btnInicio.isHidden = false
+        view.addSubview(btnInicio)
+
+
         //Autoresinzing
         label.translatesAutoresizingMaskIntoConstraints = false;   //
         btnV.translatesAutoresizingMaskIntoConstraints  = false;
         btnM.translatesAutoresizingMaskIntoConstraints  = false;
+        btnInicio.translatesAutoresizingMaskIntoConstraints = false;
 
         
         let margins = view.layoutMarginsGuide; //Pego os valores de margem do sistema (tela)
@@ -115,24 +129,27 @@ class testeViewController : UIViewController //Controller -> Controla a view
             btnM.widthAnchor.constraint(equalToConstant: 150),
             btnM.trailingAnchor.constraint(equalTo: label.trailingAnchor),
             btnM.heightAnchor.constraint(equalToConstant: 200),
-
-        ])
+            
+            
+            
+            btnInicio.topAnchor.constraint(equalTo: margins.topAnchor, constant: 500),
+            btnInicio.heightAnchor.constraint(equalToConstant: 50),
+            btnInicio.centerXAnchor.constraint(equalTo: margins.centerXAnchor),
         
+        ])
         btnV.addTarget(self, action: #selector(verificar), for: .touchUpInside)
         btnM.addTarget(self, action: #selector(verificar), for: .touchUpInside)
-        
-        
-        
-        
+        btnInicio.addTarget(self, action: #selector(verificar), for: .touchUpInside)
         
         self.view = view;  //Define a view como a view principal
     }
     
     @objc func verificar(sender: UIButton) {
-
+        
+        
+        
         if (respostasCorretas[perguntaIndex] == sender.tag) {
             correta(sender: sender);
-            
         }
         else{
             incorreta();
@@ -141,6 +158,24 @@ class testeViewController : UIViewController //Controller -> Controla a view
     
     @objc func prox(sender: UIButton){
         perguntaIndex += 1;
+        
+        print(perguntaIndex)
+        if (sender.tag == 3){
+            btnM.isHidden = false
+            btnV.isHidden = false
+            btnInicio.isHidden = true
+        }
+        else if (perguntaIndex == 7){
+            btnM.isHidden = true
+            btnV.isHidden = true
+            btnInicio.isHidden = false
+            perguntaIndex = 0
+                    
+        }
+        else{
+            btnV.isHidden = false
+            btnM.isHidden = false
+        }
         label.text = perguntas[perguntaIndex];
         label.backgroundColor = #colorLiteral(red: 0.4, green: 0.3607843137, blue: 0.6470588235, alpha: 1)
     }
@@ -148,14 +183,18 @@ class testeViewController : UIViewController //Controller -> Controla a view
     
     @objc func retry(){
        label.backgroundColor = #colorLiteral(red: 0.4, green: 0.3607843137, blue: 0.6470588235, alpha: 1)
-//        btnV.isHidden = false
-//        btnM.isHidden = false
     }
     
     @objc func correta(sender: UIButton){
 //        btnV.isHidden = true
 //        btnM.isHidden = true
         self.label.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
+    
+        if (sender.tag == 1){
+            btnM.isHidden = true
+        }else{
+            btnV.isHidden = true
+        }
         
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { timer in
             self.prox(sender: sender)
