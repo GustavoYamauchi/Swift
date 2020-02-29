@@ -43,7 +43,7 @@ class MeuBtn : UIButton{
 
 }
 
-class testeViewController : UIViewController //Controller -> Controla a view
+class ViewController : UIViewController //Controller -> Controla a view
 {
     var label : MinhaLabel!; //Declara Label
     
@@ -68,7 +68,7 @@ class testeViewController : UIViewController //Controller -> Controla a view
         view.layer.borderWidth = 1
         view.layer.cornerRadius = 20//Set a cor de fundo
         
-            
+        
         label = MinhaLabel()          //Instacia Label
         label.text = perguntas[perguntaIndex];     //Set texto
         label.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1);   //Set cor do texto
@@ -100,9 +100,8 @@ class testeViewController : UIViewController //Controller -> Controla a view
         //config botao de Inicio
         btnInicio = MeuBtn()
         btnInicio.setTitle("Start", for: .normal);
-        btnInicio.setImage(UIImage(named: "images.png"), for: .normal)
-//        btnInicio.backgroundColor(UIColor(patternImage: UIImage(named: "images.png")!))
-        btnInicio.setTitleColor(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), for: .normal)
+        btnInicio.setImage(UIImage(named: "verde.png"), for: .normal)
+        //btnInicio.setTitleColor(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), for: .normal)
         btnInicio.tag = 3
         btnInicio.backgroundColor = #colorLiteral(red: 0.4, green: 0.3607843137, blue: 0.6470588235, alpha: 1);
         btnInicio.isHidden = false
@@ -240,4 +239,4 @@ class testeViewController : UIViewController //Controller -> Controla a view
     
     
 }
-PlaygroundPage.current.liveView = testeViewController();
+PlaygroundPage.current.liveView = ViewController();
